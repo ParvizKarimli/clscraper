@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="jumbotron text-center">
-    <h1>CLScraper</h1>
-    <p>CraigsList Scraper application</p>
+    <h1>X</h1>
+    <p>Application X</p>
 </div>
 
 @endsection
