@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Link;
 
 class LinksController extends Controller
 {
@@ -23,7 +24,8 @@ class LinksController extends Controller
      */
     public function index()
     {
-        //
+        $links = Link::orderBy('id', 'desc')->paginate(50);
+        return view('links.index')->with('links', $links);
     }
 
     /**
@@ -33,7 +35,7 @@ class LinksController extends Controller
      */
     public function create()
     {
-        //
+        return view('links.create');
     }
 
     /**
@@ -44,7 +46,17 @@ class LinksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'url' => 'required|url'
+        ]);
+
+        $link = new Link;
+        $link->title = $request->input('title');
+        $link->url = $request->input('url');
+        $link->save();
+
+        return redirect('links')->with('success', 'Link added successfully.');
     }
 
     /**
@@ -66,7 +78,8 @@ class LinksController extends Controller
      */
     public function edit($id)
     {
-        //
+        $link = Link::find($id);
+        return view('links.edit')->with('link', $link);
     }
 
     /**
@@ -78,7 +91,17 @@ class LinksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'url' => 'required|url'
+        ]);
+
+        $link = Link::find($id);
+        $link->title = $request->input('title');
+        $link->url = $request->input('url');
+        $link->save();
+
+        return redirect('links')->with('success', 'Link updated successfully.');
     }
 
     /**
@@ -89,6 +112,9 @@ class LinksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $link = Link::find($id);
+        $link->delete();
+
+        return redirect('links')->with('success', 'Link deleted successfully.');
     }
 }
